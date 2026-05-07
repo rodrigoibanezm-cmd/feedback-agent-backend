@@ -38,9 +38,12 @@ export default async function handler(req, res) {
       });
     }
 
+    const parsedCase =
+      typeof data.result === "string" ? JSON.parse(data.result) : data.result;
+
     return res.status(200).json({
       ok: true,
-      case: data.result
+      case: parsedCase
     });
 
   } catch (err) {
