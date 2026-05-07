@@ -2,6 +2,7 @@
 
 import { classifyFeedback } from "../../lib/ai/classifyFeedback.js";
 import { saveCase } from "../../lib/storage/casesStore.js";
+import { sendTicketAlert } from "../../lib/notifications/sendTicketAlert.js";
 import {
   CLASSIFICATION_VERSION,
   validateClassification,
@@ -86,9 +87,22 @@ export default async function handler(req, res) {
 
     const storageKey = await saveCase(finalCase);
 
+    let alertSent = false;
+    let alertError = null;
+
+    try {
+      await sendTicketAlert(finalCase);
+      alertSent = true;
+    } catch (err) {
+      alertError = err.message;
+      console.error("Ticket alert failed:", err);
+    }
+
     return res.status(200).json({
       ok: true,
       storage_key: storageKey,
+      alert_sent: alertSent,
+      alert_error: alertError,
       case: finalCase
     });
 
