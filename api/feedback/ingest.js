@@ -3,6 +3,7 @@
 import { classifyFeedback } from "../../lib/ai/classifyFeedback.js";
 import { saveCase } from "../../lib/storage/casesStore.js";
 import { sendTicketAlert } from "../../lib/notifications/sendTicketAlert.js";
+import { sendCustomerAck } from "../../lib/notifications/sendCustomerAck.js";
 import {
   CLASSIFICATION_VERSION,
   validateClassification,
@@ -98,11 +99,23 @@ export default async function handler(req, res) {
       console.error("Ticket alert failed:", err);
     }
 
+    let customerAckSent = false;
+    let customerAckError = null;
+
+    try {
+      customerAckSent = await sendCustomerAck(finalCase);
+    } catch (err) {
+      customerAckError = err.message;
+      console.error("Customer ack failed:", err);
+    }
+
     return res.status(200).json({
       ok: true,
       storage_key: storageKey,
       alert_sent: alertSent,
       alert_error: alertError,
+      customer_ack_sent: customerAckSent,
+      customer_ack_error: customerAckError,
       case: finalCase
     });
 
