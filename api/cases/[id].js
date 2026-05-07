@@ -1,5 +1,7 @@
 // /api/cases/[id].js
 
+import { getCase } from "../../lib/storage/casesStore.js";
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ ok: false, error: "Method not allowed" });
@@ -7,30 +9,17 @@ export default async function handler(req, res) {
 
   try {
     const id = req.query.id;
-    const key = `case:${id}`;
 
-    const url = process.env.KV_REST_API_URL;
-    const token = process.env.KV_REST_API_TOKEN;
-
-    if (!url || !token) {
-      throw new Error("Faltan variables KV_REST_API_URL / KV_REST_API_TOKEN");
+    if (!id) {
+      return res.status(400).json({
+        ok: false,
+        error: "Falta case_id"
+      });
     }
 
-    const kvRes = await fetch(`${url}/get/${encodeURIComponent(key)}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const caseData = await getCase(id);
 
-    if (!kvRes.ok) {
-      const text = await kvRes.text();
-      throw new Error(`Upstash error ${kvRes.status}: ${text}`);
-    }
-
-    const data = await kvRes.json();
-
-    if (!data.result) {
+    if (!caseData) {
       return res.status(404).json({
         ok: false,
         error: "Case not found",
@@ -38,12 +27,9 @@ export default async function handler(req, res) {
       });
     }
 
-    const parsedCase =
-      typeof data.result === "string" ? JSON.parse(data.result) : data.result;
-
     return res.status(200).json({
       ok: true,
-      case: parsedCase
+      case: caseData
     });
 
   } catch (err) {
