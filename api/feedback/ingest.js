@@ -1,6 +1,7 @@
 // /api/feedback/ingest.js
 
 import { classifyFeedback } from "../../lib/ai/classifyFeedback.js";
+import { saveCase } from "../../lib/storage/casesStore.js";
 import {
   CLASSIFICATION_VERSION,
   validateClassification,
@@ -77,12 +78,17 @@ export default async function handler(req, res) {
         model: "gpt-5-mini"
       },
 
+      messages: [],
+
       created_at: now,
       updated_at: now
     };
 
+    const storageKey = await saveCase(finalCase);
+
     return res.status(200).json({
       ok: true,
+      storage_key: storageKey,
       case: finalCase
     });
 
