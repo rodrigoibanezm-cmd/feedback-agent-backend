@@ -1,6 +1,6 @@
 // /api/analytics/summary.js
 
-import { getRecentCases } from "../../lib/storage/casesStore.js";
+import { getAllCases } from "../../lib/storage/casesStore.js";
 
 function increment(map, key) {
   if (!key) return;
@@ -20,10 +20,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const limitRaw = req.query.limit || "100";
-    const limit = Math.min(Math.max(Number(limitRaw) || 100, 1), 100);
-
-    const cases = await getRecentCases(limit);
+    const cases = await getAllCases();
 
     const byIntent = {};
     const byTopic = {};
@@ -60,6 +57,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       sample_size: cases.length,
+      scope: "all_cases",
 
       totals: {
         total_cases: cases.length,
