@@ -2,25 +2,53 @@
 
 import { saveCase } from "../../lib/storage/casesStore.js";
 
-const SEED_CASES = [
+const STORES = [
+  { store_id: "mall_plaza_la_serena", store_name: "Mall Plaza La Serena" },
+  { store_id: "cenco_belloto", store_name: "Cenco Belloto" },
+  { store_id: "mall_marina", store_name: "Mall Marina" },
+  { store_id: "cenco_florida", store_name: "Cenco Florida" },
+  { store_id: "mall_plaza_vespucio", store_name: "Mall Plaza Vespucio" },
+  { store_id: "outlet_estado", store_name: "Outlet Estado" },
+  { store_id: "mall_plaza_egana", store_name: "Mall Plaza Egaña" },
+  { store_id: "patio_outlet_la_florida", store_name: "Patio Outlet La Florida" },
+  { store_id: "cenco_costanera", store_name: "Cenco Costanera" },
+  { store_id: "patio_outlet_maipu", store_name: "Patio Outlet Maipú" },
+  { store_id: "mall_vivo_outlet_parque_los_toros", store_name: "Mall Vivo Outlet Parque los Toros" },
+  { store_id: "mall_arauco_maipu", store_name: "Mall Arauco Maipú" },
+  { store_id: "cenco_alto_las_condes", store_name: "Cenco Alto Las Condes" },
+  { store_id: "cenco_rancagua", store_name: "Cenco Rancagua" },
+  { store_id: "mall_curico", store_name: "Mall Curicó" },
+  { store_id: "espacio_urbano_de_linares", store_name: "Espacio Urbano de Linares" },
+  { store_id: "mall_portal_centro_talca", store_name: "Mall Portal Centro- Talca" },
+  { store_id: "mall_del_centro_concepcion", store_name: "Mall del centro Concepción" },
+  { store_id: "mall_paseo_valdivia", store_name: "Mall Paseo Valdivia" },
+  { store_id: "cenco_osorno", store_name: "Cenco Osorno" },
+  { store_id: "mall_paseo_costanera_puerto_montt", store_name: "Mall Paseo Costanera- Puerto Montt" }
+];
+
+const SELLERS = [
+  "carla",
+  "marcela",
+  "javiera",
+  "camila",
+  "paula",
+  "valentina",
+  "fernanda",
+  "isidora",
+  "daniela",
+  "catalina"
+];
+
+const CASE_TEMPLATES = [
   {
-    case_id: "case_seed_001",
-    status: "open",
+    type_selected: "reclamo",
     priority: "medium",
     route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_001",
-    type_selected: "reclamo",
-    store_id: "costanera_center",
-    seller: "carla",
+    seller: "",
     message: "Esperé mucho tiempo y nadie me ayudó con los productos.",
-    customer: { email: "cliente1@test.com", phone: "" },
     wants_contact: true,
     rating: 3,
     classification: {
-      classification_version: "v1",
-      intent: "reclamo",
       urgency: "media",
       topic: "atencion",
       risk: "reputacional",
@@ -28,167 +56,14 @@ const SEED_CASES = [
     }
   },
   {
-    case_id: "case_seed_002",
-    status: "open",
+    type_selected: "reclamo",
     priority: "high",
     route: ["sac", "jefe_tienda"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_002",
-    type_selected: "reclamo",
-    store_id: "plaza_vespucio",
     seller: "",
-    message: "La tienda tenía muy mal olor y daba mala impresión.",
-    customer: { email: "cliente2@test.com", phone: "" },
+    message: "Me cobraron un precio distinto al publicado en la góndola.",
     wants_contact: true,
     rating: 2,
     classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "alta",
-      topic: "higiene_tienda",
-      risk: "reputacional",
-      summary: "Cliente reporta mal olor en tienda y mala impresión general."
-    }
-  },
-  {
-    case_id: "case_seed_003",
-    status: "open",
-    priority: "critical",
-    route: ["sac", "gerencia"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_003",
-    type_selected: "reclamo",
-    store_id: "alto_las_condes",
-    seller: "",
-    message: "Me sentí discriminada por la forma en que me trataron.",
-    customer: { email: "cliente3@test.com", phone: "" },
-    wants_contact: true,
-    rating: 1,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "critica",
-      topic: "atencion",
-      risk: "legal",
-      summary: "Cliente reporta posible trato discriminatorio en tienda."
-    }
-  },
-  {
-    case_id: "case_seed_004",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_004",
-    type_selected: "sugerencia",
-    store_id: "costanera_center",
-    seller: "",
-    message: "Sería bueno tener más testers disponibles.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 5,
-    classification: {
-      classification_version: "v1",
-      intent: "sugerencia",
-      urgency: "baja",
-      topic: "producto",
-      risk: "operacional",
-      summary: "Cliente sugiere aumentar disponibilidad de testers."
-    }
-  },
-  {
-    case_id: "case_seed_005",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_005",
-    type_selected: "felicitacion",
-    store_id: "plaza_egana",
-    seller: "marcela",
-    message: "Marcela me atendió excelente y encontró justo lo que necesitaba.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 7,
-    classification: {
-      classification_version: "v1",
-      intent: "felicitacion",
-      urgency: "baja",
-      topic: "atencion",
-      risk: "ninguno",
-      summary: "Cliente felicita atención de vendedora Marcela."
-    }
-  },
-  {
-    case_id: "case_seed_006",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_006",
-    type_selected: "reclamo",
-    store_id: "alto_las_condes",
-    seller: "",
-    message: "No tenían stock del producto que fui a buscar.",
-    customer: { email: "cliente6@test.com", phone: "" },
-    wants_contact: true,
-    rating: 4,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "stock",
-      risk: "operacional",
-      summary: "Cliente reclama falta de stock del producto buscado."
-    }
-  },
-  {
-    case_id: "case_seed_007",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_007",
-    type_selected: "consulta",
-    store_id: "plaza_vespucio",
-    seller: "",
-    message: "Quiero saber si puedo cambiar un producto comprado ayer.",
-    customer: { email: "cliente7@test.com", phone: "" },
-    wants_contact: true,
-    rating: 5,
-    classification: {
-      classification_version: "v1",
-      intent: "consulta",
-      urgency: "media",
-      topic: "postventa",
-      risk: "operacional",
-      summary: "Cliente consulta por cambio de producto comprado recientemente."
-    }
-  },
-  {
-    case_id: "case_seed_008",
-    status: "open",
-    priority: "high",
-    route: ["sac", "jefe_tienda"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_008",
-    type_selected: "reclamo",
-    store_id: "plaza_egana",
-    seller: "",
-    message: "Me cobraron un precio distinto al publicado.",
-    customer: { email: "cliente8@test.com", phone: "" },
-    wants_contact: true,
-    rating: 2,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
       urgency: "alta",
       topic: "precio",
       risk: "legal",
@@ -196,95 +71,29 @@ const SEED_CASES = [
     }
   },
   {
-    case_id: "case_seed_009",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_009",
-    type_selected: "felicitacion",
-    store_id: "costanera_center",
-    seller: "javiera",
-    message: "Muy buena atención, rápida y amable.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 7,
-    classification: {
-      classification_version: "v1",
-      intent: "felicitacion",
-      urgency: "baja",
-      topic: "atencion",
-      risk: "ninguno",
-      summary: "Cliente destaca atención rápida y amable."
-    }
-  },
-  {
-    case_id: "case_seed_010",
-    status: "open",
+    type_selected: "reclamo",
     priority: "medium",
     route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_010",
-    type_selected: "reclamo",
-    store_id: "alto_las_condes",
     seller: "",
-    message: "Esperé demasiado en caja para pagar.",
-    customer: { email: "cliente10@test.com", phone: "" },
+    message: "No tenían stock del producto que fui a buscar, aunque aparecía disponible.",
     wants_contact: true,
     rating: 3,
     classification: {
-      classification_version: "v1",
-      intent: "reclamo",
       urgency: "media",
-      topic: "tiempo_espera",
+      topic: "stock",
       risk: "operacional",
-      summary: "Cliente reclama demora excesiva en caja."
+      summary: "Cliente reclama inconsistencia entre disponibilidad informada y stock real."
     }
   },
   {
-    case_id: "case_seed_011",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_011",
     type_selected: "reclamo",
-    store_id: "plaza_vespucio",
-    seller: "",
-    message: "El producto venía abierto y nadie me dio solución clara.",
-    customer: { email: "cliente11@test.com", phone: "" },
-    wants_contact: true,
-    rating: 2,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "producto",
-      risk: "operacional",
-      summary: "Cliente reclama producto abierto y falta de solución clara."
-    }
-  },
-  {
-    case_id: "case_seed_012",
-    status: "open",
     priority: "critical",
     route: ["sac", "gerencia"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_012",
-    type_selected: "reclamo",
-    store_id: "costanera_center",
     seller: "",
-    message: "Me caí porque había producto derramado en el piso.",
-    customer: { email: "cliente12@test.com", phone: "" },
+    message: "Me resbalé porque había producto derramado en el piso.",
     wants_contact: true,
     rating: 1,
     classification: {
-      classification_version: "v1",
-      intent: "reclamo",
       urgency: "critica",
       topic: "higiene_tienda",
       risk: "seguridad",
@@ -292,294 +101,143 @@ const SEED_CASES = [
     }
   },
   {
-    case_id: "case_seed_013",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_013",
     type_selected: "reclamo",
-    store_id: "costanera_center",
-    seller: "",
-    message: "Pregunté por una base y la vendedora me respondió de mala forma.",
-    customer: { email: "cliente13@test.com", phone: "" },
-    wants_contact: true,
-    rating: 2,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "atencion",
-      risk: "reputacional",
-      summary: "Cliente reclama mala forma en la atención al consultar por un producto."
-    }
-  },
-  {
-    case_id: "case_seed_014",
-    status: "open",
     priority: "high",
     route: ["sac", "jefe_tienda"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_014",
-    type_selected: "reclamo",
-    store_id: "plaza_vespucio",
     seller: "",
-    message: "Había cajas en el pasillo y costaba pasar con coche de guagua.",
-    customer: { email: "cliente14@test.com", phone: "" },
+    message: "La vendedora me respondió de mala forma cuando pedí ayuda.",
     wants_contact: true,
     rating: 2,
     classification: {
-      classification_version: "v1",
-      intent: "reclamo",
       urgency: "alta",
-      topic: "higiene_tienda",
-      risk: "seguridad",
-      summary: "Cliente reporta obstrucción de pasillo con riesgo operacional y de seguridad."
-    }
-  },
-  {
-    case_id: "case_seed_015",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_015",
-    type_selected: "reclamo",
-    store_id: "plaza_egana",
-    seller: "",
-    message: "La promoción decía 2x1, pero en caja no me la respetaron.",
-    customer: { email: "cliente15@test.com", phone: "" },
-    wants_contact: true,
-    rating: 3,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "precio",
+      topic: "atencion",
       risk: "reputacional",
-      summary: "Cliente reclama que no se respetó una promoción informada en tienda."
+      summary: "Cliente reclama mal trato durante la atención en tienda."
     }
   },
   {
-    case_id: "case_seed_016",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_016",
-    type_selected: "sugerencia",
-    store_id: "alto_las_condes",
-    seller: "",
-    message: "Sería útil que indiquen mejor cuáles productos son cruelty free.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 6,
-    classification: {
-      classification_version: "v1",
-      intent: "sugerencia",
-      urgency: "baja",
-      topic: "producto",
-      risk: "operacional",
-      summary: "Cliente sugiere mejorar señalización de productos cruelty free."
-    }
-  },
-  {
-    case_id: "case_seed_017",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_017",
     type_selected: "felicitacion",
-    store_id: "alto_las_condes",
-    seller: "paula",
-    message: "Paula me explicó muy bien las diferencias entre productos y fue muy amable.",
-    customer: { email: "", phone: "" },
+    priority: "low",
+    route: ["registro"],
+    seller: "seller",
+    message: "La atención fue excelente, rápida y muy amable.",
     wants_contact: false,
     rating: 7,
     classification: {
-      classification_version: "v1",
-      intent: "felicitacion",
       urgency: "baja",
       topic: "atencion",
       risk: "ninguno",
-      summary: "Cliente felicita asesoría clara y atención amable de Paula."
+      summary: "Cliente destaca atención rápida y amable."
     }
   },
   {
-    case_id: "case_seed_018",
-    status: "open",
+    type_selected: "felicitacion",
+    priority: "low",
+    route: ["registro"],
+    seller: "seller",
+    message: "Me explicaron muy bien las diferencias entre productos y pude comprar segura.",
+    wants_contact: false,
+    rating: 7,
+    classification: {
+      urgency: "baja",
+      topic: "atencion",
+      risk: "ninguno",
+      summary: "Cliente felicita asesoría clara y buena orientación de compra."
+    }
+  },
+  {
+    type_selected: "sugerencia",
+    priority: "low",
+    route: ["registro"],
+    seller: "",
+    message: "Sería bueno tener más testers disponibles y en mejor estado.",
+    wants_contact: false,
+    rating: 6,
+    classification: {
+      urgency: "baja",
+      topic: "producto",
+      risk: "operacional",
+      summary: "Cliente sugiere mejorar disponibilidad y estado de testers."
+    }
+  },
+  {
+    type_selected: "sugerencia",
+    priority: "low",
+    route: ["registro"],
+    seller: "",
+    message: "Podrían separar mejor los productos en oferta para encontrarlos más rápido.",
+    wants_contact: false,
+    rating: 6,
+    classification: {
+      urgency: "baja",
+      topic: "producto",
+      risk: "operacional",
+      summary: "Cliente sugiere mejorar orden y señalización de productos en oferta."
+    }
+  },
+  {
+    type_selected: "consulta",
     priority: "medium",
     route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_018",
-    type_selected: "consulta",
-    store_id: "costanera_center",
     seller: "",
-    message: "Compré un producto online y quiero saber si puedo retirarlo en esta tienda.",
-    customer: { email: "cliente18@test.com", phone: "" },
+    message: "Quiero saber si puedo cambiar un producto comprado ayer.",
     wants_contact: true,
     rating: 5,
     classification: {
-      classification_version: "v1",
-      intent: "consulta",
       urgency: "media",
       topic: "postventa",
       risk: "operacional",
-      summary: "Cliente consulta por retiro en tienda de una compra online."
-    }
-  },
-  {
-    case_id: "case_seed_019",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_019",
-    type_selected: "reclamo",
-    store_id: "plaza_vespucio",
-    seller: "",
-    message: "Fui por un labial que aparecía disponible, pero no había stock en sala.",
-    customer: { email: "cliente19@test.com", phone: "" },
-    wants_contact: true,
-    rating: 3,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "stock",
-      risk: "operacional",
-      summary: "Cliente reclama inconsistencia entre disponibilidad informada y stock en sala."
-    }
-  },
-  {
-    case_id: "case_seed_020",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_020",
-    type_selected: "reclamo",
-    store_id: "plaza_egana",
-    seller: "",
-    message: "Había una sola caja funcionando y la fila avanzaba muy lento.",
-    customer: { email: "cliente20@test.com", phone: "" },
-    wants_contact: true,
-    rating: 3,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "tiempo_espera",
-      risk: "operacional",
-      summary: "Cliente reclama demora en caja por baja capacidad de atención."
-    }
-  },
-  {
-    case_id: "case_seed_021",
-    status: "open",
-    priority: "critical",
-    route: ["sac", "gerencia"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_021",
-    type_selected: "reclamo",
-    store_id: "plaza_egana",
-    seller: "",
-    message: "Una repisa estaba suelta y se cayó un producto cerca de mi hija.",
-    customer: { email: "cliente21@test.com", phone: "" },
-    wants_contact: true,
-    rating: 1,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "critica",
-      topic: "higiene_tienda",
-      risk: "seguridad",
-      summary: "Cliente reporta posible riesgo de seguridad por repisa suelta en tienda."
-    }
-  },
-  {
-    case_id: "case_seed_022",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_022",
-    type_selected: "felicitacion",
-    store_id: "costanera_center",
-    seller: "camila",
-    message: "Camila me ayudó a elegir rápido y fue muy clara con las promociones.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 7,
-    classification: {
-      classification_version: "v1",
-      intent: "felicitacion",
-      urgency: "baja",
-      topic: "atencion",
-      risk: "ninguno",
-      summary: "Cliente felicita atención rápida y claridad sobre promociones."
-    }
-  },
-  {
-    case_id: "case_seed_023",
-    status: "open",
-    priority: "low",
-    route: ["registro"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_023",
-    type_selected: "sugerencia",
-    store_id: "plaza_vespucio",
-    seller: "",
-    message: "Podrían tener un sector separado para productos en oferta.",
-    customer: { email: "", phone: "" },
-    wants_contact: false,
-    rating: 6,
-    classification: {
-      classification_version: "v1",
-      intent: "sugerencia",
-      urgency: "baja",
-      topic: "producto",
-      risk: "operacional",
-      summary: "Cliente sugiere separar productos en oferta para facilitar la compra."
-    }
-  },
-  {
-    case_id: "case_seed_024",
-    status: "open",
-    priority: "medium",
-    route: ["sac"],
-    has_reply: false,
-    source: "seed",
-    external_id: "seed_024",
-    type_selected: "reclamo",
-    store_id: "alto_las_condes",
-    seller: "",
-    message: "El tester estaba seco y la vendedora no supo ofrecer otra alternativa.",
-    customer: { email: "cliente24@test.com", phone: "" },
-    wants_contact: true,
-    rating: 3,
-    classification: {
-      classification_version: "v1",
-      intent: "reclamo",
-      urgency: "media",
-      topic: "producto",
-      risk: "operacional",
-      summary: "Cliente reclama tester en mal estado y falta de alternativa en atención."
+      summary: "Cliente consulta por cambio de producto comprado recientemente."
     }
   }
 ];
+
+function padSeedId(value) {
+  return String(value).padStart(3, "0");
+}
+
+function buildSeedCases() {
+  let counter = 1;
+
+  return STORES.flatMap((store, storeIndex) =>
+    CASE_TEMPLATES.map((template, templateIndex) => {
+      const seedNumber = padSeedId(counter++);
+      const seller = template.seller === "seller"
+        ? SELLERS[(storeIndex + templateIndex) % SELLERS.length]
+        : template.seller;
+
+      return {
+        case_id: `case_seed_${seedNumber}`,
+        status: "open",
+        priority: template.priority,
+        route: template.route,
+        has_reply: false,
+        source: "seed",
+        external_id: `seed_${seedNumber}`,
+        type_selected: template.type_selected,
+        store_id: store.store_id,
+        store_name: store.store_name,
+        seller,
+        message: template.message,
+        customer: template.wants_contact
+          ? { email: `cliente${seedNumber}@test.com`, phone: "" }
+          : { email: "", phone: "" },
+        wants_contact: template.wants_contact,
+        rating: template.rating,
+        classification: {
+          classification_version: "v1",
+          intent: template.type_selected,
+          urgency: template.classification.urgency,
+          topic: template.classification.topic,
+          risk: template.classification.risk,
+          summary: template.classification.summary
+        }
+      };
+    })
+  );
+}
+
+const SEED_CASES = buildSeedCases();
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -610,6 +268,8 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       inserted: cases.length,
+      stores: STORES.length,
+      cases_per_store: CASE_TEMPLATES.length,
       case_ids: cases.map((item) => item.case_id)
     });
 
